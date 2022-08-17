@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TechTieraTechnicalAssignment.Interfaces;
 
 namespace TechTieraTechnicalAssignment.Controllers
 {
@@ -16,14 +17,17 @@ namespace TechTieraTechnicalAssignment.Controllers
 	{
 
 		private readonly ILogger<FileUploaderController> _logger;
-		public FileUploaderController(ILogger<FileUploaderController> logger)
+		private readonly IFileService _fileService;
+		public FileUploaderController(ILogger<FileUploaderController> logger, IFileService fileService)
 		{
 			_logger = logger;
+			_fileService = fileService;
 		}
 		[HttpPost]
 		[Route("uploadfile")]
-		public IActionResult  UploadFile(IFormFile formFile)
+		public async Task<IActionResult>  UploadFile([FromForm] IFormFile formFile)
 		{
+			string filename = "";
 			try
 			{
 				if (!Helpers.Helpers.ValidateFileType(formFile.FileName))
@@ -31,6 +35,7 @@ namespace TechTieraTechnicalAssignment.Controllers
 					_logger.LogInformation("Unknown format");
 					return BadRequest("Unknown format");
 				}
+				 filename = await _fileService.SaveFile(formFile);
 
 			}
 			catch (Exception e)
@@ -38,7 +43,7 @@ namespace TechTieraTechnicalAssignment.Controllers
 				_logger.LogInformation(e.Message);
 				return BadRequest(e.Message);
 			}
-			return Ok();
+			return Ok(filename);
 		}
 	}
 }

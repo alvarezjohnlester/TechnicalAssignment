@@ -1,8 +1,20 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<h4 class="display-4">Upload Transaction File</h4>
+
+<div class="container">
+	@using (Html.BeginForm("uploadfile", "api/file/v1", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		<div class="form-row">
+			<input class="form-control" type="file" id="formFile" name="formFile">
+		</div>
+		<br />
+		<div class="col-md-10">
+			<input type="submit" value="Upload" class="btn btn-primary mb-2" />
+		</div>
+		@ViewBag.Message
+	}
 </div>

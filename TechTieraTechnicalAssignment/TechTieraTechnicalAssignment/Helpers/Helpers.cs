@@ -11,13 +11,13 @@ namespace TechTieraTechnicalAssignment.Helpers
 		public static bool ValidateFileType(string file)
 		{
 			string extension = Path.GetExtension(file);
-			if (extension != "csv" || extension != "xml")
+			if (extension.ToLower() == ".csv" || extension.ToLower() == ".xml")
 			{
-				return false;
+				return true;
 			}
 			else
 			{
-				return true;
+				return false;
 			}
 		}
 	}

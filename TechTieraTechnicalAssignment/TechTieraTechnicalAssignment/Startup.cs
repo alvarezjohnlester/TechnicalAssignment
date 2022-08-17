@@ -8,14 +8,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechTieraTechnicalAssignment.Interfaces;
 
 namespace TechTieraTechnicalAssignment
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IWebHostEnvironment env, IConfiguration configuration)
 		{
 			Configuration = configuration;
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+				.AddEnvironmentVariables();
+
+			this.Configuration = builder.Build();
 		}
 
 		public IConfiguration Configuration { get; }
@@ -24,7 +32,12 @@ namespace TechTieraTechnicalAssignment
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
+			services.AddControllers();
 			services.AddApiVersioning();
+			services.AddSingleton<IFileService, FileService>();
+
+			services.Configure<ApiConfig>(Configuration.GetSection("ApiConfig"));
+			services.AddSingleton(cfg => cfg.GetService<IOptions<ApiConfig>>().Value);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
