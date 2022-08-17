@@ -6,7 +6,7 @@
 <h4 class="display-4">Upload Transaction File</h4>
 
 <div class="container">
-	@using (Html.BeginForm("uploadfile", "api/file/v1", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 	{
 		<div class="form-row">
 			<input class="form-control" type="file" id="formFile" name="formFile">

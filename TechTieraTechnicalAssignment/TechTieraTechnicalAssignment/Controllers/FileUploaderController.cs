@@ -25,7 +25,7 @@ namespace TechTieraTechnicalAssignment.Controllers
 		}
 		[HttpPost]
 		[Route("uploadfile")]
-		public async Task<IActionResult>  UploadFile([FromForm] IFormFile formFile)
+		public async Task<IActionResult>  UploadFile(IFormFile formFile)
 		{
 			string filename = "";
 			try
