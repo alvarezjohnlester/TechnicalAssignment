@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TechTieraTechnicalAssignment.Interfaces;
+using TechTieraTechnicalAssignment.Models;
 
 namespace TechTieraTechnicalAssignment.Controllers
 {
@@ -25,7 +26,7 @@ namespace TechTieraTechnicalAssignment.Controllers
 		}
 		[HttpPost]
 		[Route("uploadfile")]
-		public async Task<IActionResult>  UploadFile(IFormFile formFile)
+		public async Task<IActionResult> UploadFile(IFormFile formFile)
 		{
 			string filename = "";
 			try
@@ -35,8 +36,8 @@ namespace TechTieraTechnicalAssignment.Controllers
 					_logger.LogInformation("Unknown format");
 					return BadRequest("Unknown format");
 				}
-				 filename = await _fileService.SaveFile(formFile);
-
+				filename = await _fileService.SaveFile(formFile);
+				List<TransactionData> transactionDatas = await _fileService.ProcessFile(filename);
 			}
 			catch (Exception e)
 			{

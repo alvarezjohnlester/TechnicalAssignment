@@ -54,7 +54,6 @@ namespace TechTieraTechnicalAssignment.Controllers
 									}
 						}, "formFile", formFile.FileName);
 						 response = await client.PostAsync(_apiConfig.apiURL + "uploadfile", content);
-
 					}
 				}
 				if (response.IsSuccessStatusCode)
@@ -70,16 +69,11 @@ namespace TechTieraTechnicalAssignment.Controllers
 					return View();
 				}
 				return View();
-				//TempData["msg"] = "<script>alert('Uploaded succesfully');</script>";
-
-				//return RedirectToAction("Index", "Home");
 			}
 			catch (Exception e)
 			{
 				ViewBag.Message = e.Message;
 				return View();
-				//TempData["msg"] = $"<script>alert('{e.Message}');</script>";
-				//return RedirectToAction("Index", "Home");
 			}
 
 		}

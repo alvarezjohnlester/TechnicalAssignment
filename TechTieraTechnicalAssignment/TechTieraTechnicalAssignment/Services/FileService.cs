@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TechTieraTechnicalAssignment.Helpers;
 using TechTieraTechnicalAssignment.Interfaces;
+using TechTieraTechnicalAssignment.Models;
 
 namespace TechTieraTechnicalAssignment
 {
 	public class FileService  : IFileService
 	{
+		
 		public FileService()
 		{
 
@@ -24,6 +27,20 @@ namespace TechTieraTechnicalAssignment
 				await formFile.CopyToAsync(fileStream);
 			}
 			return Path.GetFileName(filePath);
+		}
+		public async Task<List<TransactionData>> ProcessFile(string filename)
+		{
+			string extension = Path.GetExtension(filename);
+			FileReader _fileReader = null;
+			if (extension == ".csv")
+			{
+				_fileReader = new FileReader(new CSVReader());
+			}
+			else if(extension == ".xml")
+			{
+				_fileReader = new FileReader(new XMLReader());
+			}
+			return await _fileReader.ProcessFile(filename);
 		}
 	}
 }
