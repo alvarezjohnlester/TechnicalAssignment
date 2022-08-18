@@ -19,10 +19,12 @@ namespace TechTieraTechnicalAssignment.Controllers
 
 		private readonly ILogger<FileUploaderController> _logger;
 		private readonly IFileService _fileService;
-		public FileUploaderController(ILogger<FileUploaderController> logger, IFileService fileService)
+		private readonly IDataService _dataService;
+		public FileUploaderController(ILogger<FileUploaderController> logger, IFileService fileService, IDataService dataService )
 		{
 			_logger = logger;
 			_fileService = fileService;
+			_dataService = dataService;
 		}
 		[HttpPost]
 		[Route("uploadfile")]
@@ -38,6 +40,9 @@ namespace TechTieraTechnicalAssignment.Controllers
 				}
 				filename = await _fileService.SaveFile(formFile);
 				List<TransactionData> transactionDatas = await _fileService.ProcessFile(filename);
+				Reponse reponse = _dataService.ProcessData(transactionDatas);
+				if (!reponse.success)
+					return BadRequest("Invalid Data");
 			}
 			catch (Exception e)
 			{

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TechTieraTechnicalAssignment.Interfaces;
 using TechTieraTechnicalAssignment.Models;
+using TechTieraTechnicalAssignment.Services;
 
 namespace TechTieraTechnicalAssignment
 {
@@ -37,6 +38,11 @@ namespace TechTieraTechnicalAssignment
 			services.AddControllers();
 			services.AddApiVersioning();
 			services.AddSingleton<IFileService, FileService>();
+			services.AddSingleton<IDataService, DataService>(serviceProvider =>
+			{
+				return new DataService(Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+			}); ;
+			
 
 			services.Configure<ApiConfig>(Configuration.GetSection("ApiConfig"));
 			services.AddSingleton(cfg => cfg.GetService<IOptions<ApiConfig>>().Value);
