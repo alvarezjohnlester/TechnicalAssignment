@@ -40,7 +40,7 @@ namespace TechTieraTechnicalAssignment.Controllers
 				}
 				filename = await _fileService.SaveFile(formFile);
 				List<TransactionData> transactionDatas = await _fileService.ProcessFile(filename);
-				Reponse reponse = _dataService.ProcessData(transactionDatas);
+				Response reponse = _dataService.ProcessData(transactionDatas);
 				if (!reponse.success)
 					return BadRequest("Invalid Data");
 			}

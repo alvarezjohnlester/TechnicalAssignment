@@ -13,15 +13,15 @@ namespace TechTieraTechnicalAssignment.Services
 {
 	public class DataService : IDataService
 	{
-		public readonly string _connString;
-		public DataService(string connString)
+		public readonly DBConnection _DBConnection;
+		public DataService(DBConnection DBConnection)
 		{
-			_connString = connString;
+			_DBConnection = DBConnection;
 		}
-		public Reponse ProcessData(List<TransactionData> transactionDatas)
+		public Response ProcessData(List<TransactionData> transactionDatas)
 		{
-			var sql = "insert into TransactionData (TransactionId,Amount,CurencyCode,TransactionDate,Status) values (@TransactionId,@Amount,@CurencyCode,@TransactionDate,@Status)";
-			using (var connection = new SqlConnection(_connString))
+			var sql = "insert into TransactionData (TransactionId,Amount,CurrencyCode,TransactionDate,Status) values (@TransactionId,@Amount,@CurrencyCode,@TransactionDate,@Status)";
+			using (var connection = new SqlConnection(_DBConnection.DefaultConnection))
 			{
 				connection.Open();
 
@@ -38,7 +38,7 @@ namespace TechTieraTechnicalAssignment.Services
 								DynamicParameters dynamicParameters = new DynamicParameters();
 								dynamicParameters.Add("@TransactionId", item.TransactionId, DbType.String, ParameterDirection.Input);
 								dynamicParameters.Add("@Amount", item.Amount, DbType.Decimal, ParameterDirection.Input);
-								dynamicParameters.Add("@CurencyCode", item.CurrencyCode, DbType.String, ParameterDirection.Input);
+								dynamicParameters.Add("@CurrencyCode", item.CurrencyCode, DbType.String, ParameterDirection.Input);
 								dynamicParameters.Add("@TransactionDate", item.TransactionDate, DbType.DateTime, ParameterDirection.Input);
 								dynamicParameters.Add("@Status", item.status, DbType.String, ParameterDirection.Input);
 								connection.Execute(sql, dynamicParameters, transaction: transaction);
@@ -47,22 +47,20 @@ namespace TechTieraTechnicalAssignment.Services
 						if (isNull)
 						{
 							transaction.Rollback();
-							return new Reponse() { message = "Invalid Data", success = false };
+							return new Response() { message = "Invalid Data", success = false };
 						}
 						else
 						{
 							transaction.Commit();
-							return new Reponse() { message = "data imported", success = true };
+							return new Response() { message = "data imported", success = true };
 						}
 						
 					}
 					catch (Exception e)
 					{
 						transaction.Rollback();
-						return new Reponse() { message =e.Message, success = false };
+						return new Response() { message =e.Message, success = false };
 					}	
-					
-					
 				}
 			}
 		}

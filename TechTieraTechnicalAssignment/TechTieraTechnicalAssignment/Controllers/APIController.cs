@@ -4,46 +4,75 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechTieraTechnicalAssignment.Interfaces;
+using TechTieraTechnicalAssignment.Models;
+using TechTieraTechnicalAssignment.Models.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TechTieraTechnicalAssignment.Controllers
 {
-	[Route("api/[controller]")]
+	[ApiVersion("1.0")]
+	[Route("api/transaction/v{version:apiVersion}")]
 	[ApiController]
 	public class APIController : ControllerBase
 	{
 		private readonly ILogger<APIController> _logger;
-		// GET: api/<APIController>
+		private IGetByCurrency _getByCurrency;
+		private IGetByStatus _getByStatus;
+		private IGetByDateRange _getByDateRange;
+
+		public APIController(ILogger<APIController> logger,IGetByCurrency getByCurrency, IGetByStatus getByStatus, IGetByDateRange getByDateRange )
+		{
+			_logger = logger;
+			_getByCurrency = getByCurrency;
+			_getByStatus = getByStatus;
+			_getByDateRange = getByDateRange;
+		}
+
 		[HttpGet]
-		public IEnumerable<string> Get()
+		[Route("GetByDateRange")]
+		public async Task<IActionResult> Get([FromQuery] GetByDateRangeRequest request)
 		{
-			return new string[] { "value1", "value2" };
+			try
+			{
+				request.StartDate = DateTime.Parse(request.StartDate).ToShortDateString();
+				request.EndDate = DateTime.Parse(request.EndDate).AddDays(1).AddMinutes(-1).ToString();
+				var response = await _getByDateRange.GetData(request);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 		}
-
-		// GET api/<APIController>/5
-		[HttpGet("{id}")]
-		public string Get(int id)
+		[HttpGet]
+		[Route("GetByStatus")]
+		public async Task<IActionResult> Get([FromQuery] GetByStatusRequest request)
 		{
-			return "value";
+			try
+			{
+				var response = await _getByStatus.GetData(request);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 		}
-
-		// POST api/<APIController>
-		[HttpPost]
-		public void Post([FromBody] string value)
+		[HttpGet]
+		[Route("GetByCurrencyCode")]
+		public async Task<IActionResult> Get([FromQuery] GetByCurrencyRequest request)
 		{
-		}
-
-		// PUT api/<APIController>/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
-		{
-		}
-
-		// DELETE api/<APIController>/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
+			try
+			{
+				var response = await _getByCurrency.GetData(request);
+				return Ok(response);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 		}
 	}
 }

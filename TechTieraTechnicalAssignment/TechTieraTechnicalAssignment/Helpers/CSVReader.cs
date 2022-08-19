@@ -27,7 +27,6 @@ namespace TechTieraTechnicalAssignment.Helpers
 				{
 					// Read current line fields, pointer moves to the next line.
 					string[] fields = csvParser.ReadFields();
-					//DateTime dt = DateTime.ParseExact(fields[3], "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture);
 					DateTime? d; DateTime dt;
 					d = DateTime.TryParseExact(fields[3], "dd/MM/yyyy hh:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt) ? dt : (DateTime?)null;
 					decimal? amt; decimal a;

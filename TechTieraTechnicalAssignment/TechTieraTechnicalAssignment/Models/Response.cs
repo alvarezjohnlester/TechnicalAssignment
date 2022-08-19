@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TechTieraTechnicalAssignment.Models
 {
-	public class Reponse
+	public class Response
 	{
 		public bool success { get; set; }
 		public string message { get; set; }

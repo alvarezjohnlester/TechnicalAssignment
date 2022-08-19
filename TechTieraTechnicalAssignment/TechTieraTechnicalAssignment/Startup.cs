@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TechTieraTechnicalAssignment.Interfaces;
+using TechTieraTechnicalAssignment.Mapper;
 using TechTieraTechnicalAssignment.Models;
 using TechTieraTechnicalAssignment.Services;
 
@@ -37,15 +39,18 @@ namespace TechTieraTechnicalAssignment
 			services.AddControllersWithViews();
 			services.AddControllers();
 			services.AddApiVersioning();
+			services.AddMvc();
 			services.AddSingleton<IFileService, FileService>();
-			services.AddSingleton<IDataService, DataService>(serviceProvider =>
-			{
-				return new DataService(Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
-			}); ;
-			
+			services.AddSingleton<IGetByCurrency, GetByCurrencyService>();
+			services.AddSingleton<IGetByDateRange, GetByDateRangeService>();
+			services.AddSingleton<IGetByStatus, GetByStatusService>();
+			services.AddSingleton<IDataService, DataService>();
+			services.AddAutoMapper(typeof(TransactionProfile).Assembly);
 
 			services.Configure<ApiConfig>(Configuration.GetSection("ApiConfig"));
+			services.Configure<DBConnection>(Configuration.GetSection("ConnectionStrings"));
 			services.AddSingleton(cfg => cfg.GetService<IOptions<ApiConfig>>().Value);
+			services.AddSingleton(cfg => cfg.GetService<IOptions<DBConnection>>().Value);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +68,6 @@ namespace TechTieraTechnicalAssignment
 			}
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
-
 			app.UseRouting();
 
 			app.UseAuthorization();
