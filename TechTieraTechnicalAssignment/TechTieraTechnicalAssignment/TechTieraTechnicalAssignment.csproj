@@ -20,8 +20,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AppDataFiles\" />
     <Folder Include="ErrorLogs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AppDataFiles\TestTransactionData.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppDataFiles\TransactionData.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppDataFiles\TransactionData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
