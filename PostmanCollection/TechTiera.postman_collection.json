@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "e1806d2d-bc0c-44ed-b172-5216c365335d",
+		"name": "TechTiera",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3964028"
+	},
+	"item": [
+		{
+			"name": "Upload File",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/alvar/Downloads/Documents/Technical-Assignment (Dev).pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{APIEndpoint}}api/file/uploadfile",
+					"host": [
+						"{{APIEndpoint}}api"
+					],
+					"path": [
+						"file",
+						"uploadfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetByCurrency",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GetByStatus",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GetByDateRange",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
