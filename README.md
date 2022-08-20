@@ -1,8 +1,8 @@
 # TechnicalAssignment
 
-Database : MSSQL
-Framework : ASP.net Core 5.0
-Language : C#
+* Database : MSSQL
+* Framework : ASP.net Core 5.0
+* Language : C#
 
 *  Before running the application
  	- Install SQL server
