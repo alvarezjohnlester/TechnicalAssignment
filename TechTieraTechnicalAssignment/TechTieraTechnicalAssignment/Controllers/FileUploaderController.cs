@@ -33,10 +33,11 @@ namespace TechTieraTechnicalAssignment.Controllers
 			string filename = "";
 			try
 			{
-				if (!Helpers.Helpers.ValidateFileType(formFile.FileName))
+				Response validation = Helpers.Helpers.Validate(formFile);
+				if (!validation.success)
 				{
-					_logger.LogInformation("Unknown format");
-					return BadRequest("Unknown format");
+					_logger.LogInformation(validation.message);
+					return BadRequest(validation.message);
 				}
 				filename = await _fileService.SaveFile(formFile);
 				List<TransactionData> transactionDatas = await _fileService.ProcessFile(filename);
